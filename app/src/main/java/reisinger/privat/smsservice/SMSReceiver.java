@@ -12,45 +12,31 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
+import reisinger.privat.smsservice.AsyncTasks.POST_MessageRecieved_AsyncTask;
+
 public class SMSReceiver extends BroadcastReceiver {
 
     public static final String pdu_type = "pdus";
 
-    private final int deviceId = 1;
-
-
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onReceive(Context context, Intent intent) {
-        // Get the SMS message.
         Bundle bundle = intent.getExtras();
         SmsMessage[] msgs;
-        String strMessage = "";
         String format = bundle.getString("format");
-        // Retrieve the SMS message received.
         Object[] pdus = (Object[]) bundle.get(pdu_type);
         if (pdus != null) {
-            // Check the Android version.
-            boolean isVersionM =
-                    (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M);
-            // Fill the msgs array.
+            boolean isVersionM = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M);
             msgs = new SmsMessage[pdus.length];
             for (int i = 0; i < msgs.length; i++) {
-                // Check Android version and use appropriate createFromPdu.
                 if (isVersionM) {
-                    // If Android version M or newer:
                     msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i], format);
                 } else {
-                    // If Android version L or older:
                     msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
                 }
-                // Build the message to show.
-                strMessage += "SMS from " + msgs[i].getOriginatingAddress();
-                strMessage += " :" + msgs[i].getMessageBody() + "\n";
-                SMSDTO dto = new SMSDTO(deviceId, msgs[i].getOriginatingAddress(), msgs[i].getMessageBody(), "RECEIVED");
-                // Log and display the SMS message.
-                Log.d(TAG, "onReceive: " + strMessage);
-                Toast.makeText(context, strMessage, Toast.LENGTH_LONG).show();
+                SMSDTO dto = new SMSDTO(msgs[i].getOriginatingAddress(), msgs[i].getMessageBody(), "RECEIVED", "", "", "", "");
+                POST_MessageRecieved_AsyncTask post = new POST_MessageRecieved_AsyncTask();
+                post.execute(dto);
             }
         }
     }

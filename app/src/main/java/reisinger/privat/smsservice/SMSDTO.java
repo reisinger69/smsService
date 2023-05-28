@@ -1,32 +1,30 @@
 package reisinger.privat.smsservice;
 
 public class SMSDTO {
-    private long deviceId;
-    private String number;
+    private String phoneNumber;
     private String message;
     private String action;
+    private String actionDate;
+    private String _id;
+    private String _rev;
+    private String table;
 
-    public SMSDTO(long deviceId, String number, String message, String action) {
-        this.deviceId = deviceId;
-        this.number = number;
+    public SMSDTO(String phoneNumber, String message, String action, String actionDate, String _id, String _rev, String table) {
+        this.phoneNumber = phoneNumber;
         this.message = message;
         this.action = action;
+        this.actionDate = actionDate;
+        this._id = _id;
+        this._rev = _rev;
+        this.table = table;
     }
 
-    public long getDeviceId() {
-        return deviceId;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setDeviceId(long deviceId) {
-        this.deviceId = deviceId;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getMessage() {
@@ -43,5 +41,37 @@ public class SMSDTO {
 
     public void setAction(String action) {
         this.action = action;
+    }
+
+    public String getActionDate() {
+        return actionDate;
+    }
+
+    public void setActionDate(String actionDate) {
+        this.actionDate = actionDate;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+    public String get_rev() {
+        return _rev;
+    }
+
+    public void set_rev(String _rev) {
+        this._rev = _rev;
+    }
+
+    public String getTable() {
+        return table;
+    }
+
+    public void setTable(String table) {
+        this.table = table;
     }
 }
